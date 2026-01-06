@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Countdown to Shams Birthday ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+#bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 1.5s ease-in-out;
+  z-index: -1;
+}
+
+.container {
+  background: rgba(0,0,0,0.55);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 350px;
+  width: 90%;
+}
+
+h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+h2 {
+  margin: 5px 0 15px;
+  font-size: 22px;
+}
+
+.heart {
+  color: red;
+}
+
+#countdown {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ff4d4d;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<div class="container">
+  <h1>Countdown</h1>
+  <h2>Shams Birthday <span class="heart">❤️</span></h2>
+
+  <div id="countdown"></div>
+
+  <select id="playlist">
+    <option value="https://files.catbox.moe/zt2ffv.mp3">For You 1</option>
+    <option value="https://files.catbox.moe/qfi8gs.mp3">For You 2</option>
+    <option value="https://files.catbox.moe/glr9bj.mp3">For You 3</option>
+    <option value="https://files.catbox.moe/2d6a9u.mp3">For You 4</option>
+    <option value="https://files.catbox.moe/b7q29j.mp3">For You 5</option>
+    <option value="https://files.catbox.moe/zzcl7k.mp3">For You 6</option>
+    <option value="https://files.catbox.moe/zjumse.mp3">For You 7</option>
+    <option value="https://files.catbox.moe/hndid5.mp3">For You 8</option>
+    <option value="https://files.catbox.moe/pith97.mp3">For You 9</option>
+  </select>
+
+  <audio id="audio" controls autoplay></audio>
+
+  <!-- زر للتحكم بأغنية النهاية على الموبايل -->
+  <button id="finalPlayBtn" style="display:none;">▶️ تشغيل أغنية النهاية</button>
+
+  <!-- عنصر أغنية النهاية -->
+  <audio id="finalSong"></audio>
+</div>
+
+<script>
+// ⏳ Countdown
+const targetDate = new Date("February 16, 2026 00:00:00").getTime();
+
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff <= 0) {
+    audio.pause();
+    audio.currentTime = 0;
+
+    document.getElementById("countdown").innerHTML = `
+    كل سنة وانتي طيبة يا شموسة 🌸<br>
+    وتبقى سنة حلوة ليكي<br>
+    وتفضلي ناجحة دايمًا زي كل سنة<br>
+    وتحققي كل اللي نفسك فيه<br>
+    وعقبال ما نحتفل بيه مع بعض لما أشوفك ❤️
+    `;
+
+    const song = document.getElementById("finalSong");
+    song.src = "https://files.catbox.moe/nspj12.mp3";
+
+    song.play().catch(() => {
+      const btn = document.getElementById("finalPlayBtn");
+      btn.style.display = "inline-block";
+      btn.onclick = () => {
+        song.play();
+        btn.style.display = "none";
+      };
+    });
+
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerHTML =
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}, 1000);
+
+// 🎵 Playlist
+const audio = document.getElementById("audio");
+const playlist = document.getElementById("playlist");
+let index = 0;
+
+audio.src = playlist.options[0].value;
+
+playlist.addEventListener("change", () => {
+  index = playlist.selectedIndex;
+  audio.src = playlist.value;
+  audio.play();
+});
+
+audio.addEventListener("ended", () => {
+  index = (index + 1) % playlist.options.length;
+  playlist.selectedIndex = index;
+  audio.src = playlist.options[index].value;
+  audio.play();
+});
+
+// 🖼️ Background slideshow (Smooth)
+const images = [
+  "https://i.ibb.co/HDvpzNVZ/background.jpg",
+  "https://files.catbox.moe/3tpalc.jpg",
+  "https://files.catbox.moe/sworr2.jpg",
+  "https://files.catbox.moe/nt26ob.jpg",
+  "https://files.catbox.moe/fbi5ow.jpg",
+  "https://files.catbox.moe/u5r1fl.jpg",
+  "https://files.catbox.moe/8ns6on.jpg",
+  "https://files.catbox.moe/du0fk1.jpg",
+  "https://files.catbox.moe/3qdur6.jpg",
+  "https://files.catbox.moe/0c2ct8.jpg",
+  "https://files.catbox.moe/avqoxl.jpg",
+  "https://files.catbox.moe/9s6hc5.jpg",
+  "https://files.catbox.moe/vxnmo0.jpg",
+  "https://files.catbox.moe/ko7cuz.jpg",
+  "https://files.catbox.moe/ppxmow.jpg",
+  "https://files.catbox.moe/oa6317.jpg",
+  "https://files.catbox.moe/dbur0o.jpg",
+  "https://files.catbox.moe/hkqojm.jpg",
+  "https://files.catbox.moe/snsjda.jpg"
+];
+
+let bgIndex = 0;
+const bg = document.getElementById("bg");
+
+function changeBg() {
+  bg.style.opacity = 0;
+  setTimeout(() => {
+    bg.style.backgroundImage = `url(${images[bgIndex]})`;
+    bg.style.opacity = 1;
+    bgIndex = (bgIndex + 1) % images.length;
+  }, 700);
+}
+
+setInterval(changeBg, 5000);
+changeBg();
+</script>
+
+</body>
+</html>
